@@ -41,6 +41,7 @@ $("#generate-password").addEventListener("click", () => { if (!isAuthenticated()
 $("#open-lock").addEventListener("click", () => { closeLimitModal(); showToast("Vault bloccato."); });
 $("#alternate-download").addEventListener("click", () => { const menu = $("#download-menu"); menu.hidden = !menu.hidden; });
 document.querySelectorAll("[data-close-modal]").forEach((button) => button.addEventListener("click", closeLimitModal));
+document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("#limit-modal").hidden) closeLimitModal(); });
 document.querySelectorAll("[data-provider]").forEach((button) => button.addEventListener("click", () => login({ google: googleProvider, github: githubProvider, microsoft: microsoftProvider }[button.dataset.provider])));
 onAuthStateChanged(auth, (user) => { $("#auth-status").textContent = user ? `Connesso: ${user.displayName || user.email}` : "Modalita demo"; });
 setupDownload(); renderItems();
