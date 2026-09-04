@@ -41,7 +41,7 @@ jobs:
       - name: Install Tauri CLI
         run: npm install --global @tauri-apps/cli@v2
       - name: Generate Tauri icons
-        run: npx tauri icon src-tauri/icons/icon.svg
+        run: npx tauri icon src-tauri/icons/icon.svg --output src-tauri/icons
       - name: Build bundles
         run: npx tauri build ${{ matrix.args }}
       - name: Upload native bundles
