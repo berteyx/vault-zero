@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0d10" />
+  <meta name="description" content="Vault Zero: una cassaforte zero-trust per i tuoi dati sensibili." />
+  <title>Vault Zero | Zero-trust vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="Vault Zero home"><span class="brand-mark">V</span><span>VAULT<span class="brand-muted">ZERO</span></span></a>
+    <div class="topbar-actions"><span id="auth-status" class="auth-status">Modalita demo</span><button id="open-lock" class="button button-quiet" type="button">Blocca</button></div>
+  </header>
+  <main class="app-shell">
+    <aside class="sidebar" aria-label="Categorie vault">
+      <div class="eyebrow">Workspace personale</div><div class="vault-state"><span class="status-dot"></span><span>Locale e cifrata</span></div>
+      <nav id="category-nav" class="category-nav">
+        <button class="category active" data-category="all" type="button"><span>◈</span>Tutti gli elementi <b>12</b></button>
+        <button class="category" data-category="cards" type="button"><span>▣</span>Carte e bancomat <b>4</b></button>
+        <button class="category" data-category="banks" type="button"><span>⌁</span>PIN e conti bancari <b>3</b></button>
+        <button class="category" data-category="passwords" type="button"><span>⌘</span>Password e server <b>3</b></button>
+        <button class="category" data-category="notes" type="button"><span>□</span>Documenti e note <b>2</b></button>
+      </nav>
+      <div class="sidebar-footer"><div class="security-badge"><span>✦</span><div><strong>Zero-trust</strong><small>Protezione hardware-bound</small></div></div></div>
+    </aside>
+    <section class="workspace">
+      <div class="workspace-head"><div><p class="eyebrow">Vault / Overview</p><h1>La tua cassaforte.</h1><p class="muted">Solo tu hai le chiavi. Tutto il resto e rumore.</p></div><button id="new-item" class="button button-primary" type="button"><span>+</span> Nuovo elemento</button></div>
+      <div class="toolbar"><label class="search"><span>⌕</span><input id="search" type="search" placeholder="Cerca nella cassaforte..." autocomplete="off" /><kbd>CMD K</kbd></label><button id="generate-password" class="button button-secondary" type="button">Genera password <span>↗</span></button></div>
+      <div id="items" class="item-grid" aria-live="polite"></div><div id="empty-state" class="empty-state" hidden><span>⌁</span><h2>Nessun elemento trovato</h2><p>Prova una ricerca diversa o cambia categoria.</p></div>
+      <section class="download-strip"><div><span class="eyebrow">Vault Zero Desktop</span><h2>Il tuo vault, senza compromessi.</h2><p class="muted">Cifratura locale AES-256-GCM e chiave legata al tuo dispositivo.</p></div><div class="download-actions"><a id="primary-download" class="button button-primary" href="https://github.com/your-org/vault-zero/releases/latest" target="_blank" rel="noreferrer">Scarica per il tuo sistema</a><button id="alternate-download" class="button button-quiet" type="button">Scegli versione alternativa ↓</button><div id="download-menu" class="download-menu" hidden><a href="https://github.com/your-org/vault-zero/releases/latest/download/Vault.Zero.Windows.exe">Windows · .exe</a><a href="https://github.com/your-org/vault-zero/releases/latest/download/Vault.Zero.macOS.dmg">macOS · .dmg</a><a href="https://github.com/your-org/vault-zero/releases/latest/download/Vault.Zero.Linux.AppImage">Linux · .AppImage</a></div></div></section>
+    </section>
+  </main>
+  <div id="limit-modal" class="modal-backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="limit-title"><button class="modal-close" data-close-modal type="button" aria-label="Chiudi">×</button><span class="modal-icon">✦</span><p class="eyebrow">Accesso richiesto</p><h2 id="limit-title">La tua prova e arrivata al limite.</h2><p class="muted">Hai raggiunto il limite di 3 utilizzi gratuiti web. Registrati o accedi per continuare a proteggere i tuoi dati e sbloccare l'App Desktop.</p><div class="auth-buttons"><button data-provider="google" class="button auth-google" type="button">G <span>Accedi con Google</span></button><button data-provider="github" class="button auth-github" type="button">◉ <span>Accedi con GitHub</span></button><button data-provider="microsoft" class="button auth-microsoft" type="button">▦ <span>Accedi con Microsoft</span></button></div><p id="auth-error" class="form-error" role="alert"></p></section></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div><script type="module" src="./app.js"></script>
+</body>
+</html>
