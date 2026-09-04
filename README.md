@@ -46,4 +46,4 @@ Il provider incluso usa l’identità stabile del sistema (`/etc/machine-id`, `I
 
 ## CI/CD
 
-`deploy-web.yml` pubblica `web/` su GitHub Pages. `build-desktop.yml` crea bundle `.exe`/`.msi`, `.app`/`.dmg` e `.AppImage`/`.deb` su runner nativi. In repository Settings > Pages va selezionato **GitHub Actions**. Gli URL release nella demo usano `your-org/vault-zero`: sostituirli con il repository reale prima del deploy.
+`deploy-web.yml` pubblica `web/` su GitHub Pages, disponibile su https://berteyx.github.io/vault-zero/. `build-desktop.yml` crea bundle `.exe`/`.msi`, `.app`/`.dmg` e `.AppImage`/`.deb` su runner nativi. In repository Settings > Pages va selezionato **GitHub Actions**. Gli URL release nella demo usano `your-org/vault-zero`: sostituirli con il repository reale prima del deploy.
