@@ -40,6 +40,8 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.toml') }}
       - name: Install Tauri CLI
         run: npm install --global @tauri-apps/cli@v2
+      - name: Generate Tauri icons
+        run: npx tauri icon src-tauri/icons/icon.svg
       - name: Build bundles
         run: npx tauri build ${{ matrix.args }}
       - name: Upload native bundles

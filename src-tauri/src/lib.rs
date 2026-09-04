@@ -94,7 +94,7 @@ fn vault_path(app: &AppHandle) -> Result<PathBuf, VaultError> { let directory = 
 fn save_vault(app: AppHandle, password: String, payload: VaultPayload) -> Result<(), String> { encrypt(&password, &payload).and_then(|data| fs::write(vault_path(&app)?, data).map_err(VaultError::Io)).map_err(|error| error.to_string()) }
 
 #[tauri::command]
-fn load_vault(app: AppHandle, password: String) -> Result<VaultPayload, String> { fs::read(vault_path(&app)?).map_err(VaultError::Io).and_then(|data| decrypt(&password, &data)).map_err(|error| error.to_string()) }
+fn load_vault(app: AppHandle, password: String) -> Result<VaultPayload, String> { let path = vault_path(&app).map_err(|error| error.to_string())?; fs::read(path).map_err(VaultError::Io).and_then(|data| decrypt(&password, &data)).map_err(|error| error.to_string()) }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() { tauri::Builder::default().invoke_handler(tauri::generate_handler![save_vault, load_vault]).run(tauri::generate_context!()).expect("error while running Vault Zero"); }
