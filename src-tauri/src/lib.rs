@@ -1,7 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use aes_gcm::{aead::{Aead, KeyInit}, Aes256Gcm, Nonce};
-use argon2::{Argon2, Params, Version};
+use argon2::{Algorithm, Argon2, Params, Version};
 use hkdf::Hkdf;
 use rand::{rngs::OsRng, RngCore};
 use serde::{Deserialize, Serialize};
@@ -57,7 +57,7 @@ fn command_output(program: &str, args: &[&str]) -> Result<String, VaultError> {
 fn derive_key(password: &str, salt: &[u8], binding: &[u8]) -> Result<Zeroizing<[u8; 32]>, VaultError> {
     let params = Params::new(64 * 1024, 3, 1, Some(32)).map_err(|_| VaultError::Crypto)?;
     let mut password_key = Zeroizing::new([0u8; 32]);
-    Argon2::new(Argon2::default().algorithm(), Version::V0x13, params).hash_password_into(password.as_bytes(), salt, password_key.as_mut()).map_err(|_| VaultError::Crypto)?;
+    Argon2::new(Algorithm::Argon2id, Version::V0x13, params).hash_password_into(password.as_bytes(), salt, password_key.as_mut()).map_err(|_| VaultError::Crypto)?;
     let mut key = Zeroizing::new([0u8; 32]);
     Hkdf::<Sha256>::new(Some(binding), &*password_key).expand(b"vault-zero/aes-256-gcm/v1", key.as_mut()).map_err(|_| VaultError::Crypto)?;
     Ok(key)
