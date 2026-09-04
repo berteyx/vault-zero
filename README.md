@@ -5,7 +5,7 @@ Zero-Trust Data & Password Vault: demo web statica, shell desktop Tauri v2 e pip
 ## Struttura
 
 ```text
-src/
+web/
 	index.html             SPA demo GitHub Pages
 	app.js                 UI, limite gratuito, OAuth, OS detection, clipboard
 	style.css              interfaccia responsive dark
@@ -21,9 +21,9 @@ src-tauri/
 
 ## Avvio demo web
 
-1. Copiare i valori Firebase Web App in `src/firebase-config.js`.
+1. Copiare i valori Firebase Web App in `web/firebase-config.js`.
 2. Abilitare Google, GitHub e Microsoft in Firebase Authentication e aggiungere il dominio GitHub Pages agli Authorized domains.
-3. Servire la directory `src` con un server statico, per esempio `python3 -m http.server 8080 --directory src`, poi aprire `http://localhost:8080`.
+3. In Vercel impostare `web` come **Root Directory** del progetto, con framework **Other** e senza build command. In alternativa, servire la directory `web` con `python3 -m http.server 8080 --directory web`, poi aprire `http://localhost:8080`.
 
 La demo salva solo dati fittizi nel browser. `usage_count` viene incrementato quando si crea un elemento o si genera una password; al quarto utilizzo non autenticato apre il paywall. I placeholder Firebase non sono segreti, ma non vanno committate service account key.
 
@@ -46,4 +46,4 @@ Il provider incluso usa l’identità stabile del sistema (`/etc/machine-id`, `I
 
 ## CI/CD
 
-`deploy-web.yml` pubblica `src/` su GitHub Pages. `build-desktop.yml` crea bundle `.exe`/`.msi`, `.app`/`.dmg` e `.AppImage`/`.deb` su runner nativi. In repository Settings > Pages va selezionato **GitHub Actions**. Gli URL release nella demo usano `your-org/vault-zero`: sostituirli con il repository reale prima del deploy.
+`deploy-web.yml` pubblica `web/` su GitHub Pages. `build-desktop.yml` crea bundle `.exe`/`.msi`, `.app`/`.dmg` e `.AppImage`/`.deb` su runner nativi. In repository Settings > Pages va selezionato **GitHub Actions**. Gli URL release nella demo usano `your-org/vault-zero`: sostituirli con il repository reale prima del deploy.
