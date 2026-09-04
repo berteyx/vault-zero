@@ -12,6 +12,7 @@
   },
   "bundle": {
     "active": true,
+    "fileName": "Vault.Zero",
     "targets": ["nsis", "msi", "app", "dmg", "appimage", "deb"],
     "icon": []
   }

@@ -25,7 +25,7 @@ src-tauri/
 2. Abilitare Google, GitHub e Microsoft in Firebase Authentication e aggiungere il dominio GitHub Pages agli Authorized domains.
 3. In Vercel impostare `web` come **Root Directory** del progetto, con framework **Other** e senza build command. In alternativa, servire la directory `web` con `python3 -m http.server 8080 --directory web`, poi aprire `http://localhost:8080`.
 
-La demo salva solo dati fittizi nel browser. `usage_count` viene incrementato quando si crea un elemento o si genera una password; al quarto utilizzo non autenticato apre il paywall. I placeholder Firebase non sono segreti, ma non vanno committate service account key.
+La demo parte con una cassaforte vuota. Gli elementi creati dal form vengono salvati solo nel `localStorage` del browser; `usage_count` viene incrementato quando si crea un elemento o si genera una password e al quarto utilizzo non autenticato apre il paywall. I placeholder Firebase non sono segreti, ma non vanno committate service account key.
 
 ## Build desktop
 
