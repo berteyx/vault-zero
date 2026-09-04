@@ -6,6 +6,9 @@ on:
     tags: ["v*.*.*"]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
@@ -13,10 +16,13 @@ jobs:
       matrix:
         include:
           - os: windows-latest
+            platform: windows
             args: '--bundles nsis,msi'
           - os: macos-latest
+            platform: macos
             args: '--bundles app,dmg'
           - os: ubuntu-22.04
+            platform: linux
             args: '--bundles appimage,deb'
     runs-on: ${{ matrix.os }}
     steps:
@@ -31,15 +37,47 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             src-tauri/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.toml') }}
+      - name: Build bundles
+        uses: tauri-apps/tauri-action@v0
         with:
           projectPath: .
-          tagName: vault-zero-v__VERSION__
-          releaseName: Vault Zero v__VERSION__
-          releaseBody: Automated multi-platform desktop build.
-          releaseDraft: true
-          prerelease: true
+          includeRelease: false
           args: ${{ matrix.args }}
+      - name: Upload native bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: vault-zero-${{ matrix.platform }}
+          path: src-tauri/target/release/bundle/
+          if-no-files-found: error
+
+  publish-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Rename installers to stable download names
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find artifacts -type f -iname '*.exe' -exec cp {} dist/Vault.Zero.Windows.exe \;
+          find artifacts -type f -iname '*.msi' -exec cp {} dist/Vault.Zero.Windows.msi \;
+          find artifacts -type f -iname '*.dmg' -exec cp {} dist/Vault.Zero.macOS.dmg \;
+          find artifacts -type f -iname '*.AppImage' -exec cp {} dist/Vault.Zero.Linux.AppImage \;
+          find artifacts -type f -iname '*.deb' -exec cp {} dist/Vault.Zero.Linux.deb \;
+          test -f dist/Vault.Zero.Windows.exe
+          test -f dist/Vault.Zero.macOS.dmg
+          test -f dist/Vault.Zero.Linux.AppImage
+          test -f dist/Vault.Zero.Linux.deb
+      - name: Create or update release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: vault-zero-v0.1.0
+        run: |
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --title "Vault Zero v0.1.0" --notes "Desktop installers for Windows, macOS and Linux." --prerelease
+          fi
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" dist/* --clobber
